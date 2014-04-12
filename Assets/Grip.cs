@@ -33,6 +33,9 @@ public class Grip : MonoBehaviour {
 
                     meat.drained();
 
+                    GameObject skull = GameObject.Instantiate(Resources.Load("skull")) as GameObject;
+                    skull.GetComponent<spiritEffect>().go(this.transform, meat.transform);
+
                     GameObject.Destroy(this.gameObject);
                 }
             }
