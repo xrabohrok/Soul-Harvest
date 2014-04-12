@@ -3,7 +3,7 @@ using System.Collections;
 
 public class Grip : MonoBehaviour {
 
-    bool touching = false;
+    bool jumping = false;
 
 	// Use this for initialization
 	void Start () {
@@ -20,6 +20,21 @@ public class Grip : MonoBehaviour {
             if(this.renderer.bounds.Intersects(meat.renderer.bounds))
             {
                 meat.inSight();
+
+                if(Input.GetButtonDown("Jump") && !jumping)
+                {
+                    jumping = true;
+                    this.renderer.enabled = false;
+
+                    ((jumper)GameObject.FindObjectOfType<jumper>()).explode();
+
+                    GameObject home = GameObject.Instantiate(Resources.Load("JumperPrefab")) as GameObject;
+                    home.transform.position = meat.gameObject.transform.position;
+
+                    meat.drained();
+
+                    GameObject.Destroy(this.gameObject);
+                }
             }
         }
 	}

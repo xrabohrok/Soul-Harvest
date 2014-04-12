@@ -22,14 +22,16 @@ public class jumper : MonoBehaviour {
         arrow.transform.localScale = new Vector3(distance * radius, distance * radius);
         arrow.transform.rotation = Quaternion.AngleAxis(angle * (180/Mathf.PI) - 90, Vector3.forward);
         arrow.transform.position = this.gameObject.transform.position;
-
-        arrow.GetComponent<BoxCollider2D>().transform.rotation = Quaternion.AngleAxis(angle * (180 / Mathf.PI) - 90, Vector3.forward);
-
 	}
 
     void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(this.gameObject.transform.position, arrow.renderer.bounds.size.y * radius);
+    }
+
+    public void explode()
+    {
+        GameObject.Destroy(this.gameObject);
     }
 }

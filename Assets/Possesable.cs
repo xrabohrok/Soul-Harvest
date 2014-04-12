@@ -6,8 +6,11 @@ public class Possesable : MonoBehaviour {
     public Transform highlightSprite;
 
     float inView;
-    public float light = .2f;
+    public float lit = .2f;
+    public float takeTime = .5f;
+    bool hollow = false;
 
+    float transitTime;
 	// Use this for initialization
 	public void Start () {
 	}
@@ -16,12 +19,22 @@ public class Possesable : MonoBehaviour {
 	public void Update () {
 
 
-        if (inView > light)
+        if (inView > lit)
             highlightSprite.transform.localScale = new Vector3(.8f, .8f);
         else
         {
             highlightSprite.transform.localScale = new Vector3(1.3f, 1.3f);
             inView += Time.deltaTime;
+        }
+
+        if(hollow)
+        {
+            transitTime += Time.deltaTime;
+            if (transitTime > takeTime)
+            {
+
+                GameObject.Destroy(this.gameObject);
+            }
         }
 
 
@@ -30,6 +43,12 @@ public class Possesable : MonoBehaviour {
     public void inSight()
     {
         inView = 0;
+    }
+
+    public void drained()
+    {
+        hollow = true;
+
     }
 
 }
