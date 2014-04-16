@@ -6,6 +6,6 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/IntroMenu.unity
+    path: Assets/menu/IntroMenu.unity
   - enabled: 1
-    path: Assets/CreditsScreen.unity
+    path: Assets/menu/CreditsScreen.unity

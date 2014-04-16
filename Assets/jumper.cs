@@ -5,6 +5,11 @@ public class jumper : MonoBehaviour {
 
     public float radius = .5f;
     public Transform arrow;
+    public float jumpSpeed = 5;
+    public float drag = .8f;
+    bool setup =  true;
+
+    Vector3 jumpMomentum;
 
 	// Use this for initialization
 	void Start () {
@@ -22,6 +27,33 @@ public class jumper : MonoBehaviour {
         arrow.transform.localScale = new Vector3(distance * radius, distance * radius);
         arrow.transform.rotation = Quaternion.AngleAxis(angle * (180/Mathf.PI) - 90, Vector3.forward);
         arrow.transform.position = this.gameObject.transform.position;
+
+        Debug.Log(distance);
+        if(distance >= .95f  && setup)
+        {
+            jumpMomentum = new Vector3(horiz, vert, 0);
+            jumpMomentum.Normalize();
+            jumpMomentum *= jumpSpeed;
+            setup = false;
+        }
+
+        if(!setup)
+        {
+            this.gameObject.transform.position += jumpMomentum * Time.deltaTime;
+            jumpMomentum = jumpMomentum * drag;
+            Debug.Log(jumpMomentum);
+
+            if(jumpMomentum.magnitude < .2)
+            {
+                jumpMomentum *= 0;
+            }
+
+            if(new Vector3(horiz,vert,0).magnitude < .6)
+            {
+                setup = true;
+            }
+
+        }
 	}
 
     void OnDrawGizmos()

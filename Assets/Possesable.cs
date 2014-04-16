@@ -6,13 +6,18 @@ public class Possesable : MonoBehaviour {
     public Transform highlightSprite;
 
     float inView;
+    float wanderTime;
     public float lit = .2f;
     public float takeTime = .5f;
+    public float wanderSpeed = 1.0f;
+    public float wanderPeriod = 3;
+    bool moving = false;
     bool hollow = false;
 
     float transitTime;
 	// Use this for initialization
 	public void Start () {
+        wanderTime = Random.RandomRange(0, wanderPeriod);
 	}
 	
 	// Update is called once per frame
@@ -49,6 +54,11 @@ public class Possesable : MonoBehaviour {
     {
         hollow = true;
 
+    }
+
+    private void wander()
+    {
+        
     }
 
 }
