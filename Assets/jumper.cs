@@ -7,12 +7,35 @@ public class jumper : MonoBehaviour {
     public Transform arrow;
     public float jumpSpeed = 5;
     public float drag = .8f;
+    public float stretchSpeed = .5f;
     bool setup =  true;
+
+    private float stretch;
+
+    private static bool initialized = false;
+    private static float radiusCommon;
+    private static float jumpSpeedCommon;
+    private static float stretchSpeedCommon;
 
     Vector3 jumpMomentum;
 
 	// Use this for initialization
 	void Start () {
+        if (initialized)
+        {
+            radius = radiusCommon;
+            jumpSpeed = jumpSpeedCommon;
+            stretchSpeed = stretchSpeedCommon;
+        }
+        else
+        {
+            radiusCommon = radius;
+            jumpSpeedCommon = jumpSpeed;
+            stretchSpeedCommon = stretchSpeed;
+
+            initialized = true;
+        }
+        stretch = 0;
 	
 	}
 	
@@ -21,15 +44,20 @@ public class jumper : MonoBehaviour {
         float horiz = Input.GetAxis("Horizontal");
         float vert = Input.GetAxis("Vertical");
 
-        float distance = Mathf.Sqrt(Mathf.Pow(horiz , 2) + Mathf.Pow(vert,2));
+        float maxDistance = Mathf.Sqrt(Mathf.Pow(horiz , 2) + Mathf.Pow(vert,2));
         float angle = Mathf.Atan2(vert, horiz);
 
-        arrow.transform.localScale = new Vector3(distance * radius, distance * radius);
+        if (stretch < maxDistance)
+            stretch += stretchSpeed * Time.deltaTime;
+        else
+            stretch -= stretchSpeed * 2 * Time.deltaTime;
+
+        arrow.transform.localScale = new Vector3(stretch * radius, stretch * radius);
         arrow.transform.rotation = Quaternion.AngleAxis(angle * (180/Mathf.PI) - 90, Vector3.forward);
         arrow.transform.position = this.gameObject.transform.position;
 
-        Debug.Log(distance);
-        if(distance >= .95f  && setup)
+        Debug.Log(maxDistance);
+        if (maxDistance >= .95f && setup)
         {
             jumpMomentum = new Vector3(horiz, vert, 0);
             jumpMomentum.Normalize();
