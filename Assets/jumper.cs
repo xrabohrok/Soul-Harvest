@@ -52,24 +52,19 @@ public class jumper : MonoBehaviour {
         else
             stretch -= stretchSpeed * 2 * Time.deltaTime;
 
-        arrow.transform.localScale = new Vector3(stretch * radius, stretch * radius);
-        arrow.transform.rotation = Quaternion.AngleAxis(angle * (180/Mathf.PI) - 90, Vector3.forward);
-        arrow.transform.position = this.gameObject.transform.position;
+        transformation(angle);
 
-        Debug.Log(maxDistance);
         if (maxDistance >= .95f && setup)
         {
-            jumpMomentum = new Vector3(horiz, vert, 0);
-            jumpMomentum.Normalize();
-            jumpMomentum *= jumpSpeed;
+            jumpMomentum = SetVectorToSpeed(jumpMomentum, horiz, vert);
+            
             setup = false;
         }
 
         if(!setup)
         {
-            this.gameObject.transform.position += jumpMomentum * Time.deltaTime;
+            gameObject.transform.position += jumpMomentum * Time.deltaTime;
             jumpMomentum = jumpMomentum * drag;
-            Debug.Log(jumpMomentum);
 
             if(jumpMomentum.magnitude < .2)
             {
@@ -84,6 +79,15 @@ public class jumper : MonoBehaviour {
         }
 	}
 
+    private Vector3 SetVectorToSpeed(Vector3 input, float x, float y)
+    {
+        input = new Vector3(x, y, 0);
+        input.Normalize();
+        input *= jumpSpeed;
+
+        return input;
+    }
+
     void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
@@ -93,5 +97,12 @@ public class jumper : MonoBehaviour {
     public void explode()
     {
         GameObject.Destroy(this.gameObject);
+    }
+
+    private void transformation(float angle)
+    {
+        arrow.transform.localScale = new Vector3(stretch * radius, stretch * radius);
+        arrow.transform.rotation = Quaternion.AngleAxis(angle * (180 / Mathf.PI) - 90, Vector3.forward);
+        arrow.transform.position = this.gameObject.transform.position;
     }
 }

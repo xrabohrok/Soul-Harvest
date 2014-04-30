@@ -25,25 +25,37 @@ public class Possesable : MonoBehaviour {
 
 
         if (inView > lit)
-            highlightSprite.transform.localScale = new Vector3(.8f, .8f);
+            highlightOff();
         else
         {
-            highlightSprite.transform.localScale = new Vector3(1.3f, 1.3f);
+            highlightOn();
             inView += Time.deltaTime;
         }
 
-        if(hollow)
+        possessionCheck();
+	}
+
+    private void possessionCheck()
+    {
+        if (hollow)
         {
             transitTime += Time.deltaTime;
             if (transitTime > takeTime)
             {
-
                 GameObject.Destroy(this.gameObject);
             }
         }
+    }
 
+    private void highlightOff()
+    {
+        highlightSprite.transform.localScale = new Vector3(.8f, .8f);
+    }
 
-	}
+    private void highlightOn()
+    {
+        highlightSprite.transform.localScale = new Vector3(1.3f, 1.3f);
+    }
 
     public void inSight()
     {
